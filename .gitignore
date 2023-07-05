@@ -1,0 +1,4 @@
+build/
+generateQRcore.spec
+__pycache__
+dist/__pycache__
