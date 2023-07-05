@@ -1,8 +1,8 @@
 # qrcode-generator-py
 Python app for generating custom QR codes.
 
-![image](https://github.com/odavidsons/qrcode-generator-py/assets/122760540/3aa0561a-14da-4587-969b-148a8b29225b)
-![image](https://github.com/odavidsons/qrcode-generator-py/assets/122760540/b10c9266-03b0-4503-89a4-fd26ea859e07)
+![image](https://github.com/odavidsons/qrcode-generator-py/assets/122760540/3eb6bb97-ad95-4c71-a74e-71020dd55e20)
+![image](https://github.com/odavidsons/qrcode-generator-py/assets/122760540/c3712cb0-9e6a-4d24-a42c-e493dbc65dcf)
 
 Made with python 3.10
 
@@ -22,4 +22,4 @@ There are still a lot of tweaks and improvements that can be made, so if you're 
 
 **Logo example:**
 
-![image](https://github.com/odavidsons/qrcode-generator-py/assets/122760540/41e61824-f989-45b8-87e6-b9da856a63b2)
+![image](https://github.com/odavidsons/qrcode-generator-py/assets/122760540/59ad271f-e150-4177-b160-2dfc2e7f22fd)
