@@ -70,8 +70,8 @@ class generateQRcode(ctk.CTk):
 
         frameRight = ctk.CTkFrame(self)
         frameRight.grid(row=0,column=2,sticky="nsew",padx=5,pady=10)
-        self.labelQRCode = ctk.CTkLabel(frameRight,text="")
-        self.labelQRCode.grid(row=0,column=0)
+        self.canvasQRCode = ctk.CTkCanvas(frameRight,height=self.winfo_height(),width=self.winfo_height())
+        self.canvasQRCode.grid(row=0,column=0)
         frameRight.grid_rowconfigure(0,weight=1)
         frameRight.grid_columnconfigure(0,weight=1)
 
@@ -106,20 +106,22 @@ class generateQRcode(ctk.CTk):
                         pos = ((generated.size[0] - logo.size[0]) // 2,(generated.size[1] - logo.size[1]) // 2)
                         generated.paste(logo, pos)
                     qrcode_img = ImageTk.PhotoImage(generated)
-                    self.labelQRCode.configure(image=qrcode_img)
+                    self.canvasQRCode.configure(height=qrcode_img.height(),width=qrcode_img.height())
+                    self.canvasQRCode.create_image(0,0,image=qrcode_img,anchor="nw")
+                    self.canvasQRCode.image = qrcode_img
                     self.labelMessage.configure(text="Code generated!")
                 else: self.labelMessage.configure(text="You can't create an empty QR code.")
             except: self.labelMessage.configure(text="There was an error generating your QR code.")
 
     def clearCode(self):
-        self.labelQRCode.configure(image=None)
+        self.canvasQRCode.image = None
         self.labelMessage.configure(text="")
 
     def saveCode(self):
-        if self.labelQRCode.cget("image") != None:
+        if self.canvasQRCode.image != None:
             filetypes = (('Image Files', '.png .jpeg .jpg'),('All files', '*.*'))
             filename = ctk.filedialog.asksaveasfilename(filetypes=filetypes,title="Save image as")
-            img = ImageTk.getimage(self.labelQRCode.cget("image"))
+            img = ImageTk.getimage(self.canvasQRCode.image)
             img.save(filename)
             self.labelMessage.configure(text="Image saved!")
 
