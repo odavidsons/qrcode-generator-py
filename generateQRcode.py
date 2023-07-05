@@ -26,7 +26,7 @@ class generateQRcode(ctk.CTk):
         self.inputText.grid(row=1,column=0,padx=20,pady=10)
         label2 = ctk.CTkLabel(self.tabView.tab("Configurations"),text="Foreground color:")
         label2.grid(row=0,column=0,padx=10)
-        colors = ["darkred","red","orange","yellow","green","lime","cyan","blue","purple","violet","pink","white","black","brown"]
+        colors = ["darkred","red","orange","yellow","darkgreen","green","lime","cyan","darkblue","blue","purple","violet","pink","white","black","brown"]
         self.foregroundColor = ctk.StringVar()
         self.foregroundColor.set("black")
         select1 = ctk.CTkOptionMenu(self.tabView.tab("Configurations"),variable=self.foregroundColor,values=colors)
@@ -48,8 +48,8 @@ class generateQRcode(ctk.CTk):
         label4.grid(row=3,column=0,padx=10)
         btnSelectImg = ctk.CTkButton(self.tabView.tab("Configurations"),text="Select",command=self.selectImage)
         btnSelectImg.grid(row=3,column=1,padx=10,pady=10)
-        self.labelImgPath = ctk.CTkLabel(self.tabView.tab("Configurations"),text="Path:")
-        self.labelImgPath.grid(row=4,column=0,padx=20,pady=5)
+        self.labelImgName = ctk.CTkLabel(self.tabView.tab("Configurations"),text="Name:")
+        self.labelImgName.grid(row=4,columnspan=2,padx=20,pady=5)
         frameLeft.grid_rowconfigure(0,weight=1)
         frameLeft.grid_columnconfigure(0,weight=1)
 
@@ -76,19 +76,29 @@ class generateQRcode(ctk.CTk):
     def selectImage(self):
         filetypes = (('Image Files', '.png .jpeg .jpg'),('All files', '*.*'))
         self.imagePath = ctk.filedialog.askopenfilename(filetypes=filetypes,title="Select an image")
-        self.labelImgPath.configure(text=f"Path: {self.imagePath}")
+        pathString = self.imagePath.split("/")
+        self.labelImgName.configure(text=f"Name: {pathString[len(pathString)-1]}")
 
     def generateCode(self):
             try:
                 self.labelMessage.configure(text="")
                 text = self.inputText.get("1.0", "end-1c")
-                if self.imagePath != "":
-                    logo = Image.open(self.imagePath)
                 if len(text)>0:
                     qr = qrcode.QRCode(version=self.qrcodeSize.get(),error_correction=qrcode.ERROR_CORRECT_L,box_size=10,border=4)
                     qr.add_data(text)
                     qr.make(fit=True)
-                    generated = qr.make_image(fill_color=self.foregroundColor.get(), back_color=self.backgroundColor.get())
+                    generated = qr.make_image(fill_color=self.foregroundColor.get(), back_color=self.backgroundColor.get()).convert('RGB')
+                    if self.imagePath != "":
+                        #Place the logo in the middle of the QR code
+                        logo = Image.open(self.imagePath)
+                        # adjust logo size
+                        basewidth = 80
+                        wpercent = (basewidth/float(logo.size[0]))
+                        hsize = int((float(logo.size[1])*float(wpercent)))
+                        wsize = int((float(logo.size[0])*float(wpercent)))
+                        logo = logo.resize((wsize, hsize), Image.ANTIALIAS)
+                        pos = ((generated.size[0] - logo.size[0]) // 2,(generated.size[1] - logo.size[1]) // 2)
+                        generated.paste(logo, pos)
                     qrcode_img = ImageTk.PhotoImage(generated)
                     self.labelQRCode.configure(image=qrcode_img)
                     self.labelMessage.configure(text="Code generated!")
