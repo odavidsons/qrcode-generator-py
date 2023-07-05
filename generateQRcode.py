@@ -20,7 +20,7 @@ class generateQRcode(ctk.CTk):
         self.tabView.add("Input data")
         self.tabView.add("Configurations")
         self.tabView.set("Input data")
-        label1 = ctk.CTkLabel(self.tabView.tab("Input data"),text="Enter text:",font=self.fontMedium)
+        label1 = ctk.CTkLabel(self.tabView.tab("Input data"),text="Enter data:",font=self.fontMedium)
         label1.grid(row=0,column=0,padx=20)
         self.inputText = ctk.CTkTextbox(self.tabView.tab("Input data"))
         self.inputText.grid(row=1,column=0,padx=20,pady=10)
@@ -44,12 +44,14 @@ class generateQRcode(ctk.CTk):
         label4.grid(row=2,column=0,padx=10)
         select3 = ctk.CTkOptionMenu(self.tabView.tab("Configurations"),variable=self.qrcodeSize,values=sizes)
         select3.grid(row=2,column=1,padx=10,pady=10)
-        label4 = ctk.CTkLabel(self.tabView.tab("Configurations"),text="Logo image:")
-        label4.grid(row=3,column=0,padx=10)
+        label4 = ctk.CTkLabel(self.tabView.tab("Configurations"),text="QR code logo:")
+        label4.grid(row=3,columnspan=2,padx=10)
         btnSelectImg = ctk.CTkButton(self.tabView.tab("Configurations"),text="Select",command=self.selectImage)
-        btnSelectImg.grid(row=3,column=1,padx=10,pady=10)
+        btnSelectImg.grid(row=4,column=0,padx=10,pady=10)
+        btnClearImg = ctk.CTkButton(self.tabView.tab("Configurations"),text="Clear selection",command=self.clearImage)
+        btnClearImg.grid(row=4,column=1,padx=10,pady=10)
         self.labelImgName = ctk.CTkLabel(self.tabView.tab("Configurations"),text="Name:")
-        self.labelImgName.grid(row=4,columnspan=2,padx=20,pady=5)
+        self.labelImgName.grid(row=5,columnspan=2,padx=20,pady=5)
         frameLeft.grid_rowconfigure(0,weight=1)
         frameLeft.grid_columnconfigure(0,weight=1)
 
@@ -79,6 +81,10 @@ class generateQRcode(ctk.CTk):
         pathString = self.imagePath.split("/")
         self.labelImgName.configure(text=f"Name: {pathString[len(pathString)-1]}")
 
+    def clearImage(self):
+        self.imagePath = ""
+        self.labelImgName.configure(text="Name:")
+
     def generateCode(self):
             try:
                 self.labelMessage.configure(text="")
@@ -92,7 +98,7 @@ class generateQRcode(ctk.CTk):
                         #Place the logo in the middle of the QR code
                         logo = Image.open(self.imagePath)
                         # adjust logo size
-                        basewidth = 80
+                        basewidth = 65
                         wpercent = (basewidth/float(logo.size[0]))
                         hsize = int((float(logo.size[1])*float(wpercent)))
                         wsize = int((float(logo.size[0])*float(wpercent)))
