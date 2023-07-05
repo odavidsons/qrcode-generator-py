@@ -50,6 +50,8 @@ class generateQRcode(ctk.CTk):
         btnSelectImg.grid(row=3,column=1,padx=10,pady=10)
         self.labelImgPath = ctk.CTkLabel(self.tabView.tab("Configurations"),text="Path:")
         self.labelImgPath.grid(row=4,column=0,padx=20,pady=5)
+        frameLeft.grid_rowconfigure(0,weight=1)
+        frameLeft.grid_columnconfigure(0,weight=1)
 
         frameCenter = ctk.CTkFrame(self)
         frameCenter.grid(row=0,column=1,padx=5,pady=10)
@@ -61,11 +63,15 @@ class generateQRcode(ctk.CTk):
         btnSave.grid(row=2,column=0,padx=20,pady=20,sticky="ns")
         self.labelMessage = ctk.CTkLabel(frameCenter,text="")
         self.labelMessage.grid(row=3,column=0,padx=10,pady=5)
+        frameCenter.grid_rowconfigure(0,weight=1)
+        frameCenter.grid_columnconfigure(0,weight=1)
 
         frameRight = ctk.CTkFrame(self)
         frameRight.grid(row=0,column=2,sticky="nsew",padx=5,pady=10)
         self.labelQRCode = ctk.CTkLabel(frameRight,text="")
         self.labelQRCode.grid(row=0,column=0)
+        frameRight.grid_rowconfigure(0,weight=1)
+        frameRight.grid_columnconfigure(0,weight=1)
 
     def selectImage(self):
         filetypes = (('Image Files', '.png .jpeg .jpg'),('All files', '*.*'))
